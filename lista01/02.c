@@ -6,5 +6,5 @@ int main()
 	scanf("%d",&x);
 	scanf("%d",&y);
 	int z = x + y;
-	printf("%d",z);
+	printf("%d\n",z);
 }
