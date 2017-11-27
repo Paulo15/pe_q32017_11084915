@@ -2,6 +2,7 @@
 #include <time.h>
 #include <limits.h>
 #include <stdlib.h>
+#include <math.h>
 
 #define BIGNUM ULONG_MAX
 
@@ -23,24 +24,29 @@ ulint f1(ulint x,ulint y)		//retorna 1 se x maior			retorna 0 se y maior ou igua
 
 ulint f2(ulint x, ulint y)		//retorna 1 se x maior			retorna 0 se y maior ou igual
 {
-	
+
+	int aux=0;
 	
 	ulint soma_bitX=0;
 	ulint soma_bitY=0;
 		while(x>0)	
 	{
+		
 		if(x&1==1)
 		{
-			soma_bitX++;
+			soma_bitX+=pow(2,aux);
 		}
+		aux++;
 		x=x>>1;
 	}
+	aux=0;
 		while(y>0)	
 	{
 		if(y&1==1)
 		{
-			soma_bitY++;
+			soma_bitY+=pow(2,aux);
 		}
+		aux++;
 		y=y>>1;
 	}
 
@@ -60,21 +66,31 @@ ulint f2(ulint x, ulint y)		//retorna 1 se x maior			retorna 0 se y maior ou igu
 
 int main(void)
 {
-	
+	srand(time(NULL));
 	clock_t tempo_init, tempo_fim;
 	double tempo_gasto;
 	ulint soma=0;
 	ulint i,y;
-	scanf("%ld %ld",&i,&y);
+	
 
 	tempo_init=clock();
-	f1(i,y);
+	for(i=0;i<BIGNUM;i++)
+	{
+		y=rand()%5*i;
+		soma+=f1(i,y);
+		
+	}
 	tempo_fim=clock();
 	tempo_gasto=(double)(tempo_fim - tempo_init)/CLOCKS_PER_SEC;
 	printf("Tempo gasto na versão normal: %lf\n", tempo_gasto);
 
 	tempo_init=clock();
-	f2(i,y);
+	for(i=0;i<BIGNUM;i++)
+	{
+		y=rand()%5*i;
+		soma+=f2(i,y);
+		
+	}
 	tempo_fim=clock();
 	tempo_gasto = (double)(tempo_fim - tempo_init)/CLOCKS_PER_SEC;
 	printf("Tempo gasto versao bitwise: %lf\n", tempo_gasto);
